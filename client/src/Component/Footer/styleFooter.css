@@ -1,0 +1,10 @@
+.help li:hover{
+    color:aquamarine;
+}
+.help li{
+    cursor: pointer;
+}
+
+.footer{
+    font-size:12px;
+}

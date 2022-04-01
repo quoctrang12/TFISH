@@ -1,0 +1,10 @@
+.dropdown > a {
+  color: #fff !important;
+  font-weight: bold;
+}
+.dropdown > a:hover {
+    color: #0c2132 !important;
+  }
+.nav-link:hover {
+    color: #0c2132  !important;
+}

@@ -1,0 +1,86 @@
+.home-container{
+    background-image: url("../../../public/images/Banner_1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    min-height: 90vh;
+    position: relative;
+}
+
+.home-title{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    font-size: 4em;
+}
+
+.image-box{
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    max-height: 400px;
+    position: relative;
+}
+
+.home-product .images{
+    object-fit: cover;
+    display: block;
+    transition: all 0.5s ease;
+    transform: scale(1.15);
+    width: 100%;
+    opacity: 0.9;
+    z-index: 1;
+
+}
+
+.image-box:hover .images{
+    transform: scale(1.1);
+}
+
+.layout-box{
+    position: absolute;
+    z-index: 0;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    color: white;
+    background-color: rgba(59, 48, 48, 0.3)
+}
+.layout-box div{
+    position: absolute;
+    top:50%;
+    left:40%;
+}
+.layout-box div h2{
+    font-size:50px;
+}
+.line{
+    
+    height:3px;
+    width:100px;
+    background-color: #6bc5d1c2;
+    transition: all 0.5s ease;
+}
+
+.image-box:hover .line{
+    width:50px;
+}
+.product{
+    transition: all 0.5s ease;
+}
+.product:hover{
+    box-shadow: 0px 2px 5px 2px rgba(80, 79, 79, 0.5);
+}
+
+.add-type{
+    margin:0 auto;
+    width: 85px;
+    height:3px;
+    background-color: #6bc5d1c2;
+    transition: all 0.5s ease;
+}
+.type-product:hover .add-type{
+    
+    width: 40px;
+}
