@@ -186,52 +186,52 @@ function Home() {
         <Slider {...settings}>
           <div>
             <a href="/" className="">
-              <img width="60%" src="/images/brand/aqua-one.png" />
+              <img width="60%" src="./images/brand/aqua-one.png" />
             </a>
           </div>
           <div>
             <a href="/" className="">
-              <img width="60%" src="/images/brand/Eheim.png" />
+              <img width="60%" src="./images/brand/Eheim.png" />
             </a>
           </div>
           <div>
             <a href="/" className="">
-              <img width="60%" src="/images/brand/Fluval.png" />
+              <img width="60%" src="./images/brand/Fluval.png" />
             </a>
           </div>
           <div>
             <a href="/" className="">
-              <img width="60%" src="/images/brand/Kirby_Pet.png" />
+              <img width="60%" src="./images/brand/Kirby_Pet.png" />
             </a>
           </div>
           <div>
             <a href="/" className="">
-              <img width="60%" src="/images/brand/nutrafin.png" />
+              <img width="60%" src="./images/brand/nutrafin.png" />
             </a>
           </div>
           <div>
             <a href="/" className="">
-              <img width="60%" src="/images/brand/Reptile_One.png" />
+              <img width="60%" src="./images/brand/Reptile_One.png" />
             </a>
           </div>
           <div>
             <a href="/" className="">
-              <img width="60%" src="/images/brand/seachem.png" />
+              <img width="60%" src="./images/brand/seachem.png" />
             </a>
           </div>
           <div>
             <a href="/" className="">
-              <img width="60%" src="/images/brand/Sera.png" />
+              <img width="60%" src="./images/brand/Sera.png" />
             </a>
           </div>
           <div>
             <a href="/" className="">
-              <img width="60%" src="/images/brand/Sicce.png" />
+              <img width="60%" src="./images/brand/Sicce.png" />
             </a>
           </div>
           <div>
             <a href="/" className="">
-              <img width="60%" src="/images/brand/Tropical.png" />
+              <img width="60%" src="./images/brand/Tropical.png" />
             </a>
           </div>
         </Slider>
