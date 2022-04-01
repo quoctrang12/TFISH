@@ -90,33 +90,33 @@ function Home() {
           <Row>
             <Slider {...settings}>
               <TypeProduct
-                img="images/loaisanpham/Aquariums.jpg"
+                img="./images/loaisanpham/Aquariums.jpg"
                 title="HỒ NUÔI"
               />
               <TypeProduct
-                img="images/loaisanpham/Conditioners.jpg"
+                img="./images/loaisanpham/Conditioners.jpg"
                 title="ĐỒ TRANG TRÍ"
               />
-              <TypeProduct img="images/loaisanpham/Food.jpg" title="THỨC ĂN" />
+              <TypeProduct img="./images/loaisanpham/Food.jpg" title="THỨC ĂN" />
               <TypeProduct
-                img="images/loaisanpham/Cleaning.jpg"
+                img="./images/loaisanpham/Cleaning.jpg"
                 title="VỆ SINH"
               />
               <TypeProduct
-                img="images/loaisanpham/Filtration.jpg"
+                img="./images/loaisanpham/Filtration.jpg"
                 title="MÁY ÔXI"
               />
               <TypeProduct
-                img="images/loaisanpham/Aeration_CO2.jpg"
+                img="./images/loaisanpham/Aeration_CO2.jpg"
                 title="MÁY LỌC CO2"
               />
               <TypeProduct
-                img="images/loaisanpham/Holey_Rock.jpg"
+                img="./images/loaisanpham/Holey_Rock.jpg"
                 title="VI SINH VẬT"
               />
-              <TypeProduct img="images/loaisanpham/Lights.jpg" title="ĐÈN" />
+              <TypeProduct img="./images/loaisanpham/Lights.jpg" title="ĐÈN" />
               <TypeProduct
-                img="images/loaisanpham/Other_Accessories.jpg"
+                img="./images/loaisanpham/Other_Accessories.jpg"
                 title="KHÁC"
               />
             </Slider>

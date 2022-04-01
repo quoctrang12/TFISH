@@ -11,9 +11,10 @@ app.use(cors());
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  database: "qlfish",
+  host: "us-cdbr-east-05.cleardb.net",
+  user: "b93ddcf626d799",
+  password: "c77e843b",
+  database: "heroku_838af19cff2620a",
 });
 
 connection.connect(function (err) {
