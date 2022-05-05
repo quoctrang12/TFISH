@@ -1,28 +1,36 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Container, Row, Col, Form, Button, Breadcrumb } from "react-bootstrap";
+import {useNavigate} from "react-router-dom"
+import { faPhone,faEnvelope,faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { Container, Row, Col, Form, Button, Breadcrumb, Alert } from "react-bootstrap";
 
 
 function Logon() {
-  const [validated, setValidated] = useState(false);
+  const [message, setMessage] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [emailReg, setEmailReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
+  let navigate = useNavigate();
 
   const handleSubmit = (event) => {
     
-    axios.post("http://localhost:4000/api/register", {
+    axios.post("http://localhost:3001/api/register", {
       Name: name,
       Phone: phone,
       Email: emailReg,
       Password: passwordReg
     }).then((res)=>{
-      console.log(res);
+      setMessage(res.data.message);
     }).catch((err)=>{
       console.log(err);
     });
   };
+  if(message==="success"){
+    navigate('/login');
+  }
   return (
     <Container>
       <Breadcrumb>
@@ -35,10 +43,11 @@ function Logon() {
           <Form>
             <Row className="mb-3">
               <Form.Group as={Col} controlId="formGridEmail">
-                <Form.Label>Name</Form.Label>
+                <Form.Label><FontAwesomeIcon icon={faUser} color="#336699" /> Name</Form.Label>
                 <Form.Control
                   required
                   type="text"
+                  value = {name}
                   placeholder="Enter Firstname"
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -46,7 +55,7 @@ function Logon() {
               </Form.Group>
 
               <Form.Group as={Col} controlId="formGridPassword">
-                <Form.Label>Phone</Form.Label>
+                <Form.Label><FontAwesomeIcon icon={faPhone} color="#336699" /> Phone</Form.Label>
                 <Form.Control
                   required
                   type="text"
@@ -57,7 +66,7 @@ function Logon() {
               </Form.Group>
             </Row>
             <Form.Group className="mb-3 " controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
+              <Form.Label><FontAwesomeIcon icon={faEnvelope} color="#336699" /> Email address</Form.Label>
               <Form.Control
                 required
                 type="email"
@@ -69,7 +78,7 @@ function Logon() {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
+              <Form.Label><FontAwesomeIcon icon={faLock} color="#336699" /> Password</Form.Label>
               <Form.Control
                 required
                 type="password"
@@ -79,6 +88,7 @@ function Logon() {
               />
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             </Form.Group>
+            {message && (<Alert variant="danger">{message}</Alert>)}
             <Button
               variant="primary"
               className="mb-3 rounded-0 mx-auto"

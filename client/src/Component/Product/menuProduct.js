@@ -1,15 +1,15 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Container, ListGroup } from "react-bootstrap";
+import { useStore, actions } from "../../Store";
 
-function MenuProduct(prop) {
-  const [types, setTypes] = useState([]);
-
+function MenuProduct() {
+  const [state, dispatch] = useStore();
   useEffect(() => {
     axios
       .get("/api/typeproduct")
       .then((result) => {
-        setTypes(result.data.TypeProduct);
+        dispatch(actions.setALLTypeProduct(result.data.TypeProduct));
       })
       .catch((error) => {
         console.log(error);
@@ -24,16 +24,20 @@ function MenuProduct(prop) {
       >
         <ListGroup variant="flush">
           <h5 className="text-center">DANH MỤC</h5>
-          <ListGroup.Item onClick={() => {
-                prop.TypeShow("");
-              }} >TẤT CẢ SẢN PHẨM</ListGroup.Item>
-          {types.map((type) => (
+          <ListGroup.Item
+            onClick={() => {
+              dispatch(actions.setTypeProduct(''))
+            }}
+          >
+            TẤT CẢ SẢN PHẨM
+          </ListGroup.Item>
+          {state.allTypeProduct.map((type) => (
             <ListGroup.Item
               className="text-uppercase"
               key={type.malsp}
-              style={{cursor:"pointer"}}
+              style={{ cursor: "pointer" }}
               onClick={() => {
-                prop.TypeShow(type.malsp);
+                dispatch(actions.setTypeProduct(type.malsp))
               }}
             >
               {type.tenlsp}

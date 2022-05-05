@@ -8,6 +8,7 @@ import {
 } from "react-bootstrap";
 import React from "react";
 import "./styleFooter.css"; 
+import { Link } from "react-router-dom";
 function Footer() {
   const colorMain = "#0c2132";
   const colorSecond = "#336699";
@@ -81,12 +82,11 @@ function Footer() {
                 <tr>
                   <td className="pe-3">FACEBOOK: </td>
                   <td className="text-secondary">
-                    <a
-                      href="https://www.facebook.com/T.Fish"
+                    <Link to="/"
                       className="text-decoration-none"
                     >
                       https://www.facebook.com/T.Fish
-                    </a>
+                    </Link>
                   </td>
                 </tr>
                 <tr>
@@ -115,19 +115,19 @@ function Footer() {
           </Col>
           <Col md={5}>
             <img
-              src="./images/icon-pay-1.png"
+              src="/images/icon-pay-1.png"
               alt=""
               width="50px"
               className="me-1 rounded-3"
             />
             <img
-              src="./images/icon-pay-2.png"
+              src="/images/icon-pay-2.png"
               alt=""
               width="50px"
               className="me-1 rounded-3"
             />
             <img
-              src="./images/icon-pay-3.png"
+              src="/images/icon-pay-3.png"
               alt=""
               width="50px"
               className="me-1 rounded-3"
@@ -139,4 +139,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default React.memo(Footer);

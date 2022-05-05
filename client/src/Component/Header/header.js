@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Navbar,
   Nav,
@@ -19,17 +19,23 @@ import {
   faUserPlus,
   faRightFromBracket,
   faCircleChevronUp,
-  faLeftFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
-
-function Header({ showHeader, showName, props }) {
+import { useStore, actions } from "../../Store";
+import NavHeader from "./nav"
+function Header({ showHeader }) {
   const colorMain = "#0c2132";
   const colorSecond = "#336699";
+  const [search,setSearch] = useState("")
+  const [state, dispatch] = useStore();
+  let navigate = useNavigate();
 
+  const handleSearch = (event) => {
+    if(state.search){navigate(`/search/${state.search}`)}
+  }
   return (
     <>
       <Navbar bg="dark" variant="dark">
@@ -44,14 +50,15 @@ function Header({ showHeader, showName, props }) {
               to="/user"
               className="text-decoration-none text-white fw-bold nav-link"
             >
-              <FontAwesomeIcon icon={faUser} /> {showName || "Hello"}
+              <FontAwesomeIcon icon={faUser} /> {state.userLogin.tenKH || "Hello"}
             </Link>
-            {(showName && (
+            {(state.statusLogin==="success" && (
               <Link
                 to="/login"
                 className="text-decoration-none text-white fw-bold nav-link"
                 onClick={() => {
-                  props.parent("");
+                  dispatch(actions.setStatusLogin(""))
+                  dispatch(actions.setUserLogin({}))
                 }}
               >
                 <FontAwesomeIcon icon={faRightFromBracket} /> Log out
@@ -97,6 +104,7 @@ function Header({ showHeader, showName, props }) {
               <Button
                 style={{ backgroundColor: colorSecond, width: "100px" }}
                 className="rounded-0 rounded-start"
+                onClick = {handleSearch}
               >
                 <FontAwesomeIcon
                   icon={faMagnifyingGlass}
@@ -108,15 +116,19 @@ function Header({ showHeader, showName, props }) {
                 type="search"
                 placeholder="Search"
                 size="lg"
+                value = {state.search}
                 className="rounded-0 rounded-end"
                 aria-label="Search"
+                onChange={(e) => {
+                  dispatch(actions.setSearch(e.target.value));
+                }}
               />
             </Form>
           </Col>
           <Col lg="3" className="text-center">
             <div className="position-relative">
               <Link
-                to="/cart"
+                to={(state.statusLogin && "/cart")||"/login"}
                 className="text-decoration-none text-white fw-bold nav-link"
               >
                 <FontAwesomeIcon
@@ -129,99 +141,16 @@ function Header({ showHeader, showName, props }) {
                   pill
                   bg="light"
                   text="dark"
-                  style={{ position: "absolute", top: "0", right: "80px" }}
+                  style={{ position: "absolute", top: "0", right: "5em" }}
                 >
-                  0
+                  {state.carts.length}
                 </Badge>
               </Link>
             </div>
           </Col>
         </Container>
       </Navbar>
-      <Navbar
-        style={{ backgroundColor: colorSecond, top: "0", zIndex: "1000" }}
-        className="text-center justify-content-center position-sticky"
-      >
-        <Container fluid className="text-center justify-content-center">
-          <Navbar.Toggle aria-controls="navbarScroll" />
-          <Navbar.Collapse id="navbarScroll" className="justify-content-center">
-            <Nav
-              fill
-              className=" my-2 my-lg-0 align-items-center "
-              style={{ minHeight: "50px", width: "50%", fontSize: "18px" }}
-              navbarScroll
-            >
-              <Link
-                to="/"
-                className="text-decoration-none text-white fw-bold nav-link"
-              >
-                Trang chủ
-              </Link>
-              <NavDropdown
-                title="Sản phẩm"
-                id="navbarScrollingDropdown"
-                className="dropdown"
-              >
-                <ListGroup variant="flush">
-                  <ListGroup.Item><Link to="/product" className="text-decoration-none p-0 nav-link">Tất cả sản phẩm</Link></ListGroup.Item>
-                  <ListGroup.Item><Link to="/product" className="text-decoration-none p-0 nav-link">Cá</Link></ListGroup.Item>
-                  <ListGroup.Item><Link to="/product" className="text-decoration-none p-0 nav-link">Tôm</Link></ListGroup.Item>
-                  
-                </ListGroup>
-              </NavDropdown>
-              <Link
-                to="/news"
-                className="text-decoration-none text-white fw-bold nav-link"
-              >
-                Tin tức
-              </Link>
-
-              <NavDropdown
-                title="Dịch vụ"
-                id="navbarScrollingDropdown"
-                className="dropdown"
-              >
-                <NavDropdown.Item href="#action6">Bảo hành</NavDropdown.Item>
-                <NavDropdown.Item href="#action6">
-                  Chăm sóc khách hàng
-                </NavDropdown.Item>
-              </NavDropdown>
-              <Link
-                to="/fact"
-                className="text-decoration-none text-white fw-bold nav-link"
-              >
-                Liên hệ
-              </Link>
-
-              {showHeader && (
-                <Nav.Link href="#action7" className="">
-                  <div className="position-relative">
-                    <Link
-                      to="/cart"
-                      className="text-decoration-none text-white fw-bold nav-link"
-                    >
-                      <FontAwesomeIcon
-                        icon={faCartShopping}
-                        color="white"
-                        size="3x"
-                        className="ms-5 position-relative"
-                      />
-                      <Badge
-                        pill
-                        bg="light"
-                        text="dark"
-                        style={{ position: "absolute", top: "0", right: "0px" }}
-                      >
-                        0
-                      </Badge>
-                    </Link>
-                  </div>
-                </Nav.Link>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <NavHeader showHeader = {showHeader}/>
 
       {showHeader && (
         <div
@@ -247,4 +176,4 @@ function Header({ showHeader, showName, props }) {
   );
 }
 
-export default Header;
+export default React.memo(Header);

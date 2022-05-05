@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import Slider from "react-slick";
 import { Row, Container, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -8,10 +7,12 @@ import "./styleHome.css";
 import Comment from "./comment";
 import Product from "./BlockProduct";
 import TypeProduct from "./typeProduct";
-
+import Brand from "./Brand";
+import { useStore, actions } from "../../Store";
 
 function Home() {
   // comment attributes
+  const [state, dispatch] = useStore();
   const [cmtName, setCmtName] = useState("Nguyễn Quốc Trạng");
   const [cmtImg, setCmtImg] = useState("./images/betta-2.jpg");
   const [cmtTitle, setCmtTitle] = useState(
@@ -59,76 +60,44 @@ function Home() {
         <Container>
           <Row>
             <Col>
-              <div class="image-box">
+              <div className="image-box">
                 <img src="images/Live_Fish.jpg" alt="" className="images" />
                 <div className="layout-box">
                   <div>
                     <h2>LIVE FISH</h2>
-                    <a href="/" className="text-decoration-none text-white">
+                    <Link to="/" className="text-decoration-none text-white">
                       Xem thêm
-                    </a>
+                    </Link>
                     <p className="line"></p>
                   </div>
                 </div>
               </div>
             </Col>
             <Col>
-              <div class="image-box">
+              <div className="image-box">
                 <img src="images/Live_Plants.jpg" alt="" className="images" />
                 <div className="layout-box">
                   <div>
                     <h2>LIVE PLANTS</h2>
-                    <a href="/" className="text-decoration-none text-white">
+                    <Link to="/" className="text-decoration-none text-white">
                       Xem thêm
-                    </a>
+                    </Link>
                     <p className="line"></p>
                   </div>
                 </div>
               </div>
             </Col>
           </Row>
-          <Row>
-            <Slider {...settings}>
-              <TypeProduct
-                img="./images/Loaisanpham/Aquariums.jpg"
-                title="HỒ NUÔI"
-              />
-              <TypeProduct
-                img="./images/Loaisanpham/Conditioners.jpg"
-                title="ĐỒ TRANG TRÍ"
-              />
-              <TypeProduct img="./images/Loaisanpham/Food.jpg" title="THỨC ĂN" />
-              <TypeProduct
-                img="./images/Loaisanpham/Cleaning.jpg"
-                title="VỆ SINH"
-              />
-              <TypeProduct
-                img="./images/Loaisanpham/Filtration.jpg"
-                title="MÁY ÔXI"
-              />
-              <TypeProduct
-                img="./images/Loaisanpham/Aeration_CO2.jpg"
-                title="MÁY LỌC CO2"
-              />
-              <TypeProduct
-                img="./images/Loaisanpham/Holey_Rock.jpg"
-                title="VI SINH VẬT"
-              />
-              <TypeProduct img="./images/Loaisanpham/Lights.jpg" title="ĐÈN" />
-              <TypeProduct
-                img="./images/Loaisanpham/Other_Accessories.jpg"
-                title="KHÁC"
-              />
-            </Slider>
-          </Row>
+          <TypeProduct settings={settings} />
         </Container>
       </div>
       <Container className="pb-5 pt-3">
         <h2 className="text-center mb-4">SALE ON NOW</h2>
         <Row>
           {deco.map((deco) => (
-            <Col lg="3">
+            <Col lg="3" md={6} sm={6}>
               <Product
+                masp={deco.masp}
                 name={deco.tensp}
                 img={deco.linkimg}
                 price={deco.price}
@@ -136,9 +105,9 @@ function Home() {
               />
             </Col>
           ))}
-          <a href="/" className="text-decoration-none text-center mt-3">
-              Xem tất cả
-            </a>
+          <Link to="/" className="text-decoration-none text-center mt-3">
+            Xem tất cả
+          </Link>
         </Row>
       </Container>
       <Container
@@ -149,18 +118,14 @@ function Home() {
         <Container>
           <h2 className="text-center mb-4">WHAT OUR CUSTOMERS ARE SAYING</h2>
           <Row className="mb-5">
-            <Col lg="4">
-              <Comment name={cmtName} img={cmtImg} cmt={cmtTitle} />
-            </Col>
-            <Col lg="4">
-              <Comment name={cmtName} img={cmtImg} cmt={cmtTitle} />
-            </Col>
-            <Col lg="4">
-              <Comment name={cmtName} img={cmtImg} cmt={cmtTitle} />
-            </Col>
-            <a href="/" className="text-decoration-none text-center mt-3">
+            {[1, 2, 3].map((item) => (
+              <Col lg="4">
+                <Comment name={cmtName} img={cmtImg} cmt={cmtTitle} />
+              </Col>
+            ))}
+            <Link to="/" className="text-decoration-none text-center mt-3">
               Xem tất cả
-            </a>
+            </Link>
           </Row>
         </Container>
       </Container>
@@ -168,8 +133,9 @@ function Home() {
         <h2 className="text-center mb-4">SHOP CAT FISH</h2>
         <Row>
           {prod.map((prod) => (
-            <Col lg="3">
+            <Col lg="3" md={6} sm={6}>
               <Product
+                masp={prod.masp}
                 name={prod.tensp}
                 img={prod.linkimg}
                 title={prod.des}
@@ -178,63 +144,14 @@ function Home() {
               />
             </Col>
           ))}
-          <Link to="/product" className="text-decoration-none text-center mt-3">Xem tất cả</Link>
+          <Link to="/product" className="text-decoration-none text-center mt-3">
+            Xem tất cả
+          </Link>
         </Row>
       </Container>
       <Container className="pt-3 pb-5">
         <h2 className="text-center mb-4"> BRANDS THAT YOU CAN TRUST</h2>
-        <Slider {...settings}>
-          <div>
-            <a href="/" className="">
-              <img width="60%" src="./images/brand/aqua-one.png" />
-            </a>
-          </div>
-          <div>
-            <a href="/" className="">
-              <img width="60%" src="./images/brand/Eheim.png" />
-            </a>
-          </div>
-          <div>
-            <a href="/" className="">
-              <img width="60%" src="./images/brand/Fluval.png" />
-            </a>
-          </div>
-          <div>
-            <a href="/" className="">
-              <img width="60%" src="./images/brand/Kirby_Pet.png" />
-            </a>
-          </div>
-          <div>
-            <a href="/" className="">
-              <img width="60%" src="./images/brand/nutrafin.png" />
-            </a>
-          </div>
-          <div>
-            <a href="/" className="">
-              <img width="60%" src="./images/brand/Reptile_One.png" />
-            </a>
-          </div>
-          <div>
-            <a href="/" className="">
-              <img width="60%" src="./images/brand/seachem.png" />
-            </a>
-          </div>
-          <div>
-            <a href="/" className="">
-              <img width="60%" src="./images/brand/Sera.png" />
-            </a>
-          </div>
-          <div>
-            <a href="/" className="">
-              <img width="60%" src="./images/brand/Sicce.png" />
-            </a>
-          </div>
-          <div>
-            <a href="/" className="">
-              <img width="60%" src="./images/brand/Tropical.png" />
-            </a>
-          </div>
-        </Slider>
+        <Brand settings={settings} />
       </Container>
     </div>
   );

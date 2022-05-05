@@ -1,29 +1,51 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Container, Row, Col, Form, Button, Breadcrumb } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Breadcrumb,
+  Alert,
+} from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { faFacebookF, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-function Login(props) {
+import { useStore, actions } from "../../Store";
+
+function Login() {
+  const [state, dispatch] = useStore();
   const [validated, setValidated] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [statusLogin,setStatusLogin] = useState("");
+  let navigate = useNavigate();
+
   const handleSubmit = (event) => {
     axios
-      .post("http://localhost:4000/api/login", {
-        Email: email,
-        Password: password,
+      .post("http://localhost:3001/api/login", {
+        Email: state.email,
+        Password: state.password,
       })
       .then((res) => {
-        if(res.data.message){
-          setStatusLogin(res.data.message);
-        }else{
-          props.parent(res.data[0].tenKH)
+        if (res.data.message) {
+          dispatch(actions.setStatusLogin(res.data.message));
+        } else {
+          dispatch(actions.setStatusLogin("success"));
+          dispatch(actions.setUserLogin(res.data[0]));
+          axios
+            .post("http://localhost:3001/api/getgiohang", {
+              makh: res.data[0].maKH,
+            })
+            .then((res) => {
+              dispatch(actions.setCarts(res.data.product))
+            });
         }
+      })
+      .catch((err) => {
+        console.log(err);
       });
+
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -31,7 +53,9 @@ function Login(props) {
     }
     setValidated(true);
   };
-
+  if (state.statusLogin === "success") {
+    navigate("/", { replace: true });
+  }
   return (
     <Container>
       <Breadcrumb>
@@ -43,7 +67,7 @@ function Login(props) {
           <h4 className="mb-5" style={{ marginLeft: "20%" }}>
             LOGIN
           </h4>
-          <Form >
+          <Form noValidate validated={validated}>
             <Form.Group
               as={Col}
               md="7"
@@ -59,7 +83,9 @@ function Login(props) {
                 type="email"
                 placeholder="Enter email"
                 className=" rounded-0"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  dispatch(actions.setEmail(e.target.value));
+                }}
               />
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             </Form.Group>
@@ -78,7 +104,9 @@ function Login(props) {
                 type="password"
                 placeholder="Password"
                 className=" rounded-0"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  dispatch(actions.setPassword(e.target.value));
+                }}
               />
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             </Form.Group>
@@ -89,7 +117,7 @@ function Login(props) {
               controlId="formBasicCheckbox"
             >
               <Form.Check type="checkbox" label="Nhớ mật khẩu" />
-              <Link to="#" className="text-decoration-none">
+              <Link to="/" className="text-decoration-none">
                 Quên mật khẩu
               </Link>
             </Form.Group>
@@ -102,8 +130,10 @@ function Login(props) {
             >
               Đăng nhập
             </Button>
+            {state.statusLogin && (
+              <Alert variant="danger">{state.statusLogin}</Alert>
+            )}
           </Form>
-          <h5>{statusLogin}</h5>
           <h4 className="mb-4 text-center">Hoặc</h4>
           <Button
             as={Col}
@@ -118,7 +148,6 @@ function Login(props) {
             as={Col}
             md="7"
             variant="outline-danger"
-            type="submit"
             className="mb-3 rounded-0"
             style={{ marginLeft: "20%" }}
           >

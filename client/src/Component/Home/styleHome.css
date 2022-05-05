@@ -1,3 +1,6 @@
+*{
+    font-family: Nunito,sans-serif !important;
+}
 .home-container{
     background-image: url("../../../public/images/Banner_1.jpg");
     background-repeat: no-repeat;
@@ -19,7 +22,7 @@
     box-sizing: border-box;
     overflow: hidden;
     max-height: 400px;
-    position: relative;
+    position: relative; 
 }
 
 .home-product .images{
@@ -81,6 +84,5 @@
     transition: all 0.5s ease;
 }
 .type-product:hover .add-type{
-    
     width: 40px;
 }
