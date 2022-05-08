@@ -19,7 +19,7 @@ app.use(express.static(path.resolve(__dirname, "../client/build")));
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
+  password: "password",
   database: "qlfish",
 });
 
