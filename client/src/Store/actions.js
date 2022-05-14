@@ -9,12 +9,22 @@ import {
   SET_USER_LOGIN,
   SET_STATUS_LOGIN,
   SET_CARTS,
-  UPDATE_CART,
-  SET_SEARCH
+  UPDATE,
+  SET_SEARCH,
+  SET_ALL_USERS,
+  SET_ALL_BILLS
 } from "./constants";
 
 export const setAllProducts = (payload) => ({
   type: SET_ALL_PRODUCTS,
+  payload,
+});
+export const setAllUsers = (payload) => ({
+  type: SET_ALL_USERS,
+  payload,
+});
+export const setAllBills = (payload) => ({
+  type: SET_ALL_BILLS,
   payload,
 });
 export const setOnePageProduct = (payload) => ({
@@ -53,8 +63,8 @@ export const setCarts = (payload) => ({
   type: SET_CARTS,
   payload,
 });
-export const updateCart = () => ({
-  type: UPDATE_CART
+export const update = () => ({
+  type: UPDATE
 });
 export const setSearch = (payload) => ({
   type: SET_SEARCH,

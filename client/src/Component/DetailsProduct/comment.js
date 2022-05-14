@@ -1,6 +1,4 @@
-import { Container, Form, Col, Button } from "react-bootstrap";
-import Rating from "react-rating";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { Container, Form, Button } from "react-bootstrap";
 
 function Comment() {
   return (
@@ -9,7 +7,6 @@ function Comment() {
         <h2 className="text-uppercase text-center">Bình luận và đánh giá</h2>
 
         <Form>
-            
           <Form.Group className="mb-3 mx-auto " controlId="formBasicEmail">
             <Form.Label className="text-uppercase"> Bình Luận</Form.Label>
             <Form.Control

@@ -1,6 +1,6 @@
 import React from "react";
-import { Row } from "react-bootstrap";
 import Slider from "react-slick";
+import { Row } from "react-bootstrap";
 
 function TypeProduct({ settings }) {
   const data = [
@@ -18,18 +18,23 @@ function TypeProduct({ settings }) {
   return (
     <Row>
       <Slider {...settings}>
-        {data.map(item => (
-          <div
-            className="bg-white text-center mt-5 mx-auto type-product pb-5 pt-5"
-            style={{ cursor: "pointer" }}
-          >
-            <img src={"images/Loaisanpham/" + item.image} width="90%" alt="" />
-            <h5 className="mt-3">{item.title}</h5>
-            <span className="">Xem thêm</span>
-            <p className="add-type"></p>
+        {data.map((item) => (
+          <div>
+            <div
+              className="bg-white text-center mt-5 mx-auto type-product pb-5 pt-5"
+              style={{ cursor: "pointer", width: "90%" }}
+            >
+              <img
+                src={"images/Loaisanpham/" + item.image}
+                width="90%"
+                alt=""
+              />
+              <h5 className="mt-3">{item.title}</h5>
+              <span className="">Xem thêm</span>
+              <p className="add-type"></p>
+            </div>
           </div>
         ))}
-        
       </Slider>
     </Row>
   );

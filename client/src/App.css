@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+  color: #495057;
+  background-color: #fff;
+  border-bottom: 1px solid #000;
+}
+.nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
+  border-color: none;
+  isolation: isolate;
+}

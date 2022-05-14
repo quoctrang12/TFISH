@@ -1,6 +1,9 @@
-import axios from "axios";
 import React, { useEffect } from "react";
+import axios from "axios";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Container, ListGroup } from "react-bootstrap";
+
 import { useStore, actions } from "../../Store";
 
 function MenuProduct() {
@@ -14,7 +17,7 @@ function MenuProduct() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -22,26 +25,44 @@ function MenuProduct() {
         className="position-sticky"
         style={{ top: "120px", zIndex: "100" }}
       >
+        {state.typeProduct.name_type && (
+          <div>
+            <h5>LỰA CHỌN HIỆN TẠI</h5>
+            <p
+              className="current-select p-2 px-3"
+              onClick={() => {
+                dispatch(actions.update());
+                dispatch(actions.setTypeProduct({}));
+              }}
+            >
+              {state.typeProduct.name_type} <FontAwesomeIcon icon={faClose} />
+            </p>
+            <p className="current-select p-2 px-3">
+              kết quả: {state.onePageProduct.length} sp
+            </p>
+          </div>
+        )}
         <ListGroup variant="flush">
-          <h5 className="text-center">DANH MỤC</h5>
-          <ListGroup.Item
+          <h5 className="">DANH MỤC</h5>
+          <p
+            className="text-uppercase select-type"
             onClick={() => {
-              dispatch(actions.setTypeProduct(''))
+              dispatch(actions.setTypeProduct({}));
+              dispatch(actions.update());
             }}
           >
             TẤT CẢ SẢN PHẨM
-          </ListGroup.Item>
+          </p>
           {state.allTypeProduct.map((type) => (
-            <ListGroup.Item
-              className="text-uppercase"
-              key={type.malsp}
-              style={{ cursor: "pointer" }}
+            <p
+              className="text-uppercase select-type"
+              key={type.id}
               onClick={() => {
-                dispatch(actions.setTypeProduct(type.malsp))
+                dispatch(actions.setTypeProduct(type));
               }}
             >
-              {type.tenlsp}
-            </ListGroup.Item>
+              {type.name_type}
+            </p>
           ))}
         </ListGroup>
       </Container>

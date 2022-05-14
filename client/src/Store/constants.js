@@ -1,4 +1,8 @@
 export const SET_ALL_PRODUCTS = "set_all_products"
+export const SET_ALL_USERS = "set_all_users"
+export const SET_ALL_BILLS = "set_all_bills"
+
+
 export const SET_ONE_PAGE_PRODUCT = "set_one_page_product"
 export const SET_NUMBER_PAGE_PRODUCT = "set_number_page_product"
 export const SET_TYPE_PRODUCT = "set_type_product"
@@ -8,5 +12,5 @@ export const SET_EMAIL = "set_email"
 export const SET_USER_LOGIN = "set_user_login"
 export const SET_STATUS_LOGIN = "set_status_login"
 export const SET_CARTS = "set_carts"
-export const UPDATE_CART = "update_cart"
+export const UPDATE = "UPDATE"
 export const SET_SEARCH = "set_search"

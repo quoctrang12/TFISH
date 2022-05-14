@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import * as Component from "./Component";
+import { ToastContainer } from "react-toastify";
 import axios from "axios";
+
 import { useStore, actions } from "./Store";
+import * as Component from "./Component";
+import PrivateRoutes from "./Routes/PrivateRoutes";
+import ClientRoutes from "./Routes/ClientRoutes";
 
 function App() {
-  const [showHeader, setShowHeader] = useState(false);
   const [state, dispatch] = useStore();
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowHeader(window.scrollY >= 190);
-    };
-    window.addEventListener("scroll", handleScroll);
-    console.log("render")
-  },[]);
-  
   useEffect(() => {
     axios
       .get("/api/product")
@@ -31,28 +26,35 @@ function App() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [state.update, state.numberPageProduct, dispatch]);
 
   return (
     <>
-      <Component.Header showHeader={showHeader} />
       <Routes>
-        <Route path="/" element={<Component.PageHome />}></Route>
-        <Route path="/search/:searchTitle" element={<Component.PageSearch />}></Route>
-        <Route path="/login" element={<Component.PageLogin />}></Route>
-        <Route path="/logon" element={<Component.PageLogon />}></Route>
-        <Route path="/user" element={<Component.PageUser />}></Route>
-        <Route path="/product" element={<Component.PageProduct />}></Route>
-        <Route
-          path="/details/:productID"
-          element={<Component.PageDetailsProduct />}
-        ></Route>
-        <Route path="/contact" element={<Component.PageContact />}></Route>
-        <Route path="/cart" element={<Component.PageCart />}></Route>
-        <Route path="/Admin" element={<Component.PageAdmin />}></Route>
+        <Route element={<ClientRoutes />}>
+          <Route path="/" element={<Component.PageHome />}></Route>
+          <Route path="/search" element={<Component.PageSearch />}></Route>
+          <Route element={<PrivateRoutes />}>
+            <Route path="/contact" element={<Component.PageContact />}></Route>
+            <Route path="/cart" element={<Component.PageCart />}></Route>
+            <Route path="/bill" element={<Component.PageBill />}></Route>
+          </Route>
+          <Route path="/login" element={<Component.PageLogin />}></Route>
+          <Route path="/logon" element={<Component.PageLogon />}></Route>
+          <Route path="/product" element={<Component.PageProduct />}></Route>
+          <Route
+            path="/details/:productID"
+            element={<Component.PageDetailsProduct />}
+          ></Route>
+        </Route>
+        <Route path="/admin" element={<Component.PageAdmin />}>
+          <Route index element={<Component.PageAdminDashboard />} />
+          <Route path="product" element={<Component.PageAdminProduct />} />
+          <Route path="user" element={<Component.PageAdminUser />} />
+          <Route path="bill" element={<Component.PageAdminBill />} />
+        </Route>
       </Routes>
-
-      <Component.Footer />
+      <ToastContainer pauseOnFocusLoss draggable pauseOnHover />
     </>
   );
 }

@@ -1,9 +1,9 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Slider from "react-slick";
+import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
-
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 import {
   Col,
   Container,
@@ -15,11 +15,11 @@ import {
   FormControl,
   Badge,
 } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+
 import { useStore, actions } from "../../Store";
 import Product from "../Home/BlockProduct";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
-import Comment from "./comment"
+import Comment from "./comment";
+
 function DetailsProduct() {
   let navigate = useNavigate();
 
@@ -28,11 +28,11 @@ function DetailsProduct() {
   const [count, setCount] = useState(1);
   let { productID } = useParams();
   useEffect(() => {
-    state.allProduct.map((product) => {
-      if (product.masp === productID) setProductDetails(product);
+    state.allProduct.forEach((product) => {
+      if (product.id === parseInt(productID)) setProductDetails(product);
     });
-  }, [productID]);
- 
+  }, [productID, state.allProduct]);
+
   var settings = {
     infinite: true,
     slidesToShow: 4,
@@ -40,12 +40,12 @@ function DetailsProduct() {
   };
   const handleAddProduct = () => {
     if (state.statusLogin) {
-        axios.post('http://localhost:3001/api/addgiohang',{
-        masp : productDetails.masp,
-        makh : state.userLogin.maKH,
-        soluong : 1
-      })
-      dispatch(actions.updateCart());
+      axios.post("http://localhost:4000/api/addCart", {
+        id_product: productDetails.id,
+        id_user: state.userLogin.id,
+        count: count,
+      });
+      dispatch(actions.update());
     } else {
       navigate("/login");
     }
@@ -53,11 +53,15 @@ function DetailsProduct() {
 
   return (
     <Container fluid className="p-0">
-      <Breadcrumb className="pt-3 ps-3">
-        <Breadcrumb.Item active>Home</Breadcrumb.Item>
-        <Breadcrumb.Item active>Product</Breadcrumb.Item>
-        <Breadcrumb.Item active>{productDetails.tensp}</Breadcrumb.Item>
-      </Breadcrumb>
+      <Container>
+        <Breadcrumb className="pt-3 ps-3">
+          <Breadcrumb.Item active>Home</Breadcrumb.Item>
+          <Breadcrumb.Item active>Product</Breadcrumb.Item>
+          <Breadcrumb.Item active>
+            {productDetails.name_product}
+          </Breadcrumb.Item>
+        </Breadcrumb>
+      </Container>
       <div style={{ backgroundColor: "#6bc5d110" }} className="p-5">
         <Container>
           <Row>
@@ -67,18 +71,17 @@ function DetailsProduct() {
                 src={productDetails.linkimg}
                 alt=""
                 width="90%"
-                
               />
             </Col>
             <Col lg={6}>
-              <h2 className="text-uppercase">{productDetails.tensp}</h2>
+              <h2 className="text-uppercase">{productDetails.name_product}</h2>
               <Row className="pt-2 pb-3">
                 <Col lg={6}>
-                  <FontAwesomeIcon icon={faStar} color="#336699" />
-                  <FontAwesomeIcon icon={faStar} color="#336699" />
-                  <FontAwesomeIcon icon={faStar} color="#336699" />
-                  <FontAwesomeIcon icon={faStar} color="#336699" />
-                  <FontAwesomeIcon icon={faStar} color="#336699" />
+                  <FontAwesomeIcon icon={faStar} color="#29689b" />
+                  <FontAwesomeIcon icon={faStar} color="#29689b" />
+                  <FontAwesomeIcon icon={faStar} color="#29689b" />
+                  <FontAwesomeIcon icon={faStar} color="#29689b" />
+                  <FontAwesomeIcon icon={faStar} color="#29689b" />
                 </Col>
                 <Col lg={6} className="text-end">
                   Trạng thái: <Badge className="rounded-0 ">Còn hàng</Badge>
@@ -129,7 +132,7 @@ function DetailsProduct() {
                 <Button
                   className="rounded-0 border-0"
                   style={{ backgroundColor: "#51b346" }}
-                  onClick = {handleAddProduct}
+                  onClick={handleAddProduct}
                 >
                   Thêm vào giỏ hàng
                 </Button>
@@ -152,12 +155,12 @@ function DetailsProduct() {
             <Slider {...settings}>
               {state.allProduct.map(
                 (product) =>
-                  product.malsp === productDetails.malsp &&
-                  product.masp !== productDetails.masp && (
+                  product.id_type === productDetails.id_type &&
+                  product.id !== productDetails.id && (
                     <Col style={{ width: "90%" }}>
                       <Product
-                        masp={product.masp}
-                        name={product.tensp}
+                        id_product={product.id}
+                        name={product.name_product}
                         img={product.linkimg}
                         title={product.des}
                         price={product.price}
@@ -170,7 +173,7 @@ function DetailsProduct() {
           </Row>
         </Container>
       </div>
-                    <Comment/>
+      <Comment />
     </Container>
   );
 }

@@ -1,18 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Row, Container, Col } from "react-bootstrap";
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import "./styleHome.css";
+import { Row, Container, Col } from "react-bootstrap";
+
 import Comment from "./comment";
 import Product from "./BlockProduct";
 import TypeProduct from "./typeProduct";
 import Brand from "./Brand";
-import { useStore, actions } from "../../Store";
+import "./styleHome.css";
 
 function Home() {
   // comment attributes
-  const [state, dispatch] = useStore();
   const [cmtName, setCmtName] = useState("Nguyễn Quốc Trạng");
   const [cmtImg, setCmtImg] = useState("./images/betta-2.jpg");
   const [cmtTitle, setCmtTitle] = useState(
@@ -23,9 +21,9 @@ function Home() {
   const [deco, setDeco] = useState([]);
   useEffect(() => {
     axios
-      .get("/api/sanphamhome")
+      .get("/api/productshome")
       .then((res) => {
-        setProd(res.data.sanpham);
+        setProd(res.data.products);
       })
       .catch((error) => console.log(error));
 
@@ -46,8 +44,11 @@ function Home() {
     pauseOnHover: true,
   };
   return (
-    <div>
+    <div style={{ backgroundColor: "#6bc5d110" }}>
       <div className="home-container">
+        <video className="videoTag" autoPlay loop muted>
+          <source src="images/Banner.mp4" type="video/mp4" />
+        </video>
         <h1 className="home-title text-white text-center">
           WELCOME TO <br /> T.FISH SHOP
         </h1>
@@ -65,7 +66,10 @@ function Home() {
                 <div className="layout-box">
                   <div>
                     <h2>LIVE FISH</h2>
-                    <Link to="/" className="text-decoration-none text-white">
+                    <Link
+                      to="/product"
+                      className="text-decoration-none text-white"
+                    >
                       Xem thêm
                     </Link>
                     <p className="line"></p>
@@ -79,7 +83,10 @@ function Home() {
                 <div className="layout-box">
                   <div>
                     <h2>LIVE PLANTS</h2>
-                    <Link to="/" className="text-decoration-none text-white">
+                    <Link
+                      to="/product"
+                      className="text-decoration-none text-white"
+                    >
                       Xem thêm
                     </Link>
                     <p className="line"></p>
@@ -97,16 +104,20 @@ function Home() {
           {deco.map((deco) => (
             <Col lg="3" md={6} sm={6}>
               <Product
-                masp={deco.masp}
-                name={deco.tensp}
+                id_product={deco.id}
+                name={deco.name_product}
                 img={deco.linkimg}
                 price={deco.price}
                 size={deco.size}
               />
             </Col>
           ))}
-          <Link to="/" className="text-decoration-none text-center mt-3">
+          <Link
+            to="/product"
+            className="text-decoration-none text-center mt-3 add"
+          >
             Xem tất cả
+            <p className="add-type"></p>
           </Link>
         </Row>
       </Container>
@@ -123,8 +134,9 @@ function Home() {
                 <Comment name={cmtName} img={cmtImg} cmt={cmtTitle} />
               </Col>
             ))}
-            <Link to="/" className="text-decoration-none text-center mt-3">
+            <Link to="/" className="text-decoration-none text-center mt-3 add">
               Xem tất cả
+              <p className="add-type"></p>
             </Link>
           </Row>
         </Container>
@@ -135,8 +147,8 @@ function Home() {
           {prod.map((prod) => (
             <Col lg="3" md={6} sm={6}>
               <Product
-                masp={prod.masp}
-                name={prod.tensp}
+                id_product={prod.id}
+                name={prod.name_product}
                 img={prod.linkimg}
                 title={prod.des}
                 price={prod.price}
@@ -144,8 +156,12 @@ function Home() {
               />
             </Col>
           ))}
-          <Link to="/product" className="text-decoration-none text-center mt-3">
+          <Link
+            to="/product"
+            className="text-decoration-none text-center mt-3 add"
+          >
             Xem tất cả
+            <p className="add-type"></p>
           </Link>
         </Row>
       </Container>

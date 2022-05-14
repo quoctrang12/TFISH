@@ -1,11 +1,23 @@
-import axios from "axios";
 import React, { useState } from "react";
-import {useNavigate} from "react-router-dom"
-import { faPhone,faEnvelope,faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import { Container, Row, Col, Form, Button, Breadcrumb, Alert } from "react-bootstrap";
-
+import {
+  faPhone,
+  faEnvelope,
+  faUser,
+  faLock,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Breadcrumb,
+  Alert,
+} from "react-bootstrap";
 
 function Logon() {
   const [message, setMessage] = useState("");
@@ -16,20 +28,31 @@ function Logon() {
   let navigate = useNavigate();
 
   const handleSubmit = (event) => {
-    
-    axios.post("http://localhost:3001/api/register", {
-      Name: name,
-      Phone: phone,
-      Email: emailReg,
-      Password: passwordReg
-    }).then((res)=>{
-      setMessage(res.data.message);
-    }).catch((err)=>{
-      console.log(err);
-    });
+    axios
+      .post("http://localhost:4000/api/register", {
+        Name: name,
+        Phone: phone,
+        Email: emailReg,
+        Password: passwordReg,
+      })
+      .then((res) => {
+        setMessage(res.data.message);
+        toast.success("Đăng ký thành công", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-  if(message==="success"){
-    navigate('/login');
+  if (message === "success") {
+    navigate("/login");
   }
   return (
     <Container>
@@ -39,15 +62,17 @@ function Logon() {
       </Breadcrumb>
       <Row>
         <Col lg="6" className="mt-5 mb-5 mx-auto">
-          <h4 className="mb-5">CREATE MY ACCOUNT</h4>
+          <h4 className="mb-5">Đăng ký tài khoản</h4>
           <Form>
             <Row className="mb-3">
               <Form.Group as={Col} controlId="formGridEmail">
-                <Form.Label><FontAwesomeIcon icon={faUser} color="#336699" /> Name</Form.Label>
+                <Form.Label>
+                  <FontAwesomeIcon icon={faUser} color="#29689b" /> Name
+                </Form.Label>
                 <Form.Control
                   required
                   type="text"
-                  value = {name}
+                  value={name}
                   placeholder="Enter Firstname"
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -55,7 +80,9 @@ function Logon() {
               </Form.Group>
 
               <Form.Group as={Col} controlId="formGridPassword">
-                <Form.Label><FontAwesomeIcon icon={faPhone} color="#336699" /> Phone</Form.Label>
+                <Form.Label>
+                  <FontAwesomeIcon icon={faPhone} color="#29689b" /> Phone
+                </Form.Label>
                 <Form.Control
                   required
                   type="text"
@@ -66,7 +93,10 @@ function Logon() {
               </Form.Group>
             </Row>
             <Form.Group className="mb-3 " controlId="formBasicEmail">
-              <Form.Label><FontAwesomeIcon icon={faEnvelope} color="#336699" /> Email address</Form.Label>
+              <Form.Label>
+                <FontAwesomeIcon icon={faEnvelope} color="#29689b" /> Email
+                address
+              </Form.Label>
               <Form.Control
                 required
                 type="email"
@@ -78,7 +108,9 @@ function Logon() {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label><FontAwesomeIcon icon={faLock} color="#336699" /> Password</Form.Label>
+              <Form.Label>
+                <FontAwesomeIcon icon={faLock} color="#29689b" /> Password
+              </Form.Label>
               <Form.Control
                 required
                 type="password"
@@ -88,13 +120,13 @@ function Logon() {
               />
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             </Form.Group>
-            {message && (<Alert variant="danger">{message}</Alert>)}
+            {message && <Alert variant="danger">{message}</Alert>}
             <Button
               variant="primary"
               className="mb-3 rounded-0 mx-auto"
               onClick={handleSubmit}
             >
-              Create my account
+              Đăng ký
             </Button>
           </Form>
         </Col>

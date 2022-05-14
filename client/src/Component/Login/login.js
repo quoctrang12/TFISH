@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { faFacebookF, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { Link, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 import {
   Container,
   Row,
@@ -7,13 +13,9 @@ import {
   Form,
   Button,
   Breadcrumb,
-  Alert,
+  Alert
 } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { faFacebookF, faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { useStore, actions } from "../../Store";
 
 function Login() {
@@ -23,22 +25,31 @@ function Login() {
 
   const handleSubmit = (event) => {
     axios
-      .post("http://localhost:3001/api/login", {
+      .post("http://localhost:4000/api/login", {
         Email: state.email,
         Password: state.password,
       })
       .then((res) => {
         if (res.data.message) {
-          dispatch(actions.setStatusLogin(res.data.message));
+          dispatch(actions.setStatusLogin(false));
         } else {
-          dispatch(actions.setStatusLogin("success"));
+          toast.success("Đăng nhập thành công", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          dispatch(actions.setStatusLogin(true));
           dispatch(actions.setUserLogin(res.data[0]));
           axios
-            .post("http://localhost:3001/api/getgiohang", {
-              makh: res.data[0].maKH,
+            .post("http://localhost:4000/api/getCart", {
+              id_user: res.data[0].id,
             })
             .then((res) => {
-              dispatch(actions.setCarts(res.data.product))
+              dispatch(actions.setCarts(res.data.product));
             });
         }
       })
@@ -53,8 +64,10 @@ function Login() {
     }
     setValidated(true);
   };
-  if (state.statusLogin === "success") {
-    navigate("/", { replace: true });
+  if (state.statusLogin) {
+    if (state.userLogin.permision === "0")
+      navigate("/admin", { replace: true });
+    else navigate("/", { replace: true });
   }
   return (
     <Container>
@@ -65,7 +78,7 @@ function Login() {
       <Row>
         <Col lg="6" className=" border-end mt-5 mb-5">
           <h4 className="mb-5" style={{ marginLeft: "20%" }}>
-            LOGIN
+            Đăng nhập
           </h4>
           <Form noValidate validated={validated}>
             <Form.Group
@@ -75,7 +88,7 @@ function Login() {
               controlId="formBasicEmail"
             >
               <Form.Label>
-                <FontAwesomeIcon icon={faEnvelope} color="#336699" /> Email
+                <FontAwesomeIcon icon={faEnvelope} color="#29689b" /> Email
                 address
               </Form.Label>
               <Form.Control
@@ -97,7 +110,7 @@ function Login() {
               controlId="formBasicPassword"
             >
               <Form.Label>
-                <FontAwesomeIcon icon={faLock} color="#336699" /> Password
+                <FontAwesomeIcon icon={faLock} color="#29689b" /> Password
               </Form.Label>
               <Form.Control
                 required
@@ -156,7 +169,7 @@ function Login() {
         </Col>
         <Col lg="6" className="mt-5">
           <h4 className="mb-5" style={{ marginLeft: "20%" }}>
-            NEW CUSTOMERS
+            Khách hàng mới
           </h4>
           <div className="justify-content-between">
             <p className="mb-5" style={{ marginLeft: "20%" }}>

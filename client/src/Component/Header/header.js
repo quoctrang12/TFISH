@@ -1,81 +1,74 @@
-import React, { useState } from "react";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faOpencart } from "@fortawesome/free-brands-svg-icons";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
+import {
+  faMagnifyingGlass,
+  faUserPlus,
+  faRightFromBracket,
+  faCircleChevronUp,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   Navbar,
   Nav,
   Container,
-  NavDropdown,
   Form,
   FormControl,
   Button,
   Col,
   Alert,
   Badge,
-  ListGroup
 } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCartShopping,
-  faMagnifyingGlass,
-  faUserPlus,
-  faRightFromBracket,
-  faCircleChevronUp,
-} from "@fortawesome/free-solid-svg-icons";
 
-import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 import { useStore, actions } from "../../Store";
-import NavHeader from "./nav"
+import NavHeader from "./nav";
+
 function Header({ showHeader }) {
   const colorMain = "#0c2132";
-  const colorSecond = "#336699";
-  const [search,setSearch] = useState("")
+  const colorSecond = "#29689b";
   const [state, dispatch] = useStore();
   let navigate = useNavigate();
 
   const handleSearch = (event) => {
-    if(state.search){navigate(`/search/${state.search}`)}
-  }
+    if (state.search) {
+      navigate(`/search`);
+    }
+  };
   return (
     <>
       <Navbar bg="dark" variant="dark">
         <Container>
           <Navbar.Brand href="#home">
-            <Alert variant="success" className="m-0 p-0 start-page">
-              <marquee>XIN CHÀO QUÝ KHÁCH ĐẾN VỚI T.FISH</marquee>
+            <Alert variant="success" className="m-0 p-0 pt-2 start-page">
+              <marquee>chào mừng QUÝ KHÁCH ĐẾN VỚI T.FISH</marquee>
             </Alert>
           </Navbar.Brand>
           <Nav>
-            <Link
-              to="/user"
-              className="text-decoration-none text-white fw-bold nav-link"
-            >
-              <FontAwesomeIcon icon={faUser} /> {state.userLogin.tenKH || "Hello"}
+            <Link to="/user" className="nav nav-link">
+              <FontAwesomeIcon icon={faUser} />{" "}
+              {state.userLogin.name || "Xin chào"}
             </Link>
-            {(state.statusLogin==="success" && (
+            {(state.statusLogin && (
               <Link
                 to="/login"
-                className="text-decoration-none text-white fw-bold nav-link"
+                className="nav nav-link"
                 onClick={() => {
-                  dispatch(actions.setStatusLogin(""))
-                  dispatch(actions.setUserLogin({}))
+                  dispatch(actions.setStatusLogin(false));
+                  dispatch(actions.setUserLogin({}));
+                  dispatch(actions.setCarts([]));
                 }}
               >
-                <FontAwesomeIcon icon={faRightFromBracket} /> Log out
+                <FontAwesomeIcon icon={faRightFromBracket} /> Đăng xuất
               </Link>
             )) || (
               <>
-                <Link
-                  to="/login"
-                  className="text-decoration-none text-white fw-bold nav-link"
-                >
-                  <FontAwesomeIcon icon={faRightFromBracket} /> Login
+                <Link to="/login" className="nav nav-link">
+                  <FontAwesomeIcon icon={faRightFromBracket} /> Đăng nhập
                 </Link>
-                <Link
-                  to="/logon"
-                  className="text-decoration-none text-white fw-bold nav-link"
-                >
-                  <FontAwesomeIcon icon={faUserPlus} /> Register
+                <Link to="/logon" className="nav nav-link">
+                  <FontAwesomeIcon icon={faUserPlus} /> Đăng ký
                 </Link>
               </>
             )}
@@ -86,25 +79,16 @@ function Header({ showHeader }) {
         variant="dark"
         style={{ backgroundColor: colorMain, height: "150px" }}
       >
-        <Container style={{ justifyContent: "none" }}>
-          <Col lg="3">
-            <Link to="/" className="text-decoration-none text-white fw-bold">
-              <img
-                alt=""
-                src="https://cdn.shopify.com/s/files/1/0147/1561/7366/files/coburg-logo-white-with-fish.png?v=1559017648"
-                width="80"
-                height="80"
-                className="d-inline-block align-top"
-              />{" "}
-              <span className="h1">T.FISH</span>
-            </Link>
-          </Col>
-          <Col lg="6">
+        <Container>
+          <Link to="/" className="nav logo mx-auto">
+            <span className="logo">T.FISH</span>
+          </Link>
+          <Col lg="5">
             <Form className="d-flex">
               <Button
                 style={{ backgroundColor: colorSecond, width: "100px" }}
-                className="rounded-0 rounded-start"
-                onClick = {handleSearch}
+                className="rounded-0 rounded-start border-0"
+                onClick={handleSearch}
               >
                 <FontAwesomeIcon
                   icon={faMagnifyingGlass}
@@ -113,10 +97,9 @@ function Header({ showHeader }) {
                 />
               </Button>
               <FormControl
-                type="search"
-                placeholder="Search"
+                placeholder="Tìm kiếm"
                 size="lg"
-                value = {state.search}
+                value={state.search}
                 className="rounded-0 rounded-end"
                 aria-label="Search"
                 onChange={(e) => {
@@ -125,32 +108,30 @@ function Header({ showHeader }) {
               />
             </Form>
           </Col>
-          <Col lg="3" className="text-center">
-            <div className="position-relative">
-              <Link
-                to={(state.statusLogin && "/cart")||"/login"}
-                className="text-decoration-none text-white fw-bold nav-link"
+          <div className="position-relative mx-auto">
+            <Link
+              to={(state.statusLogin && "/cart") || "/login"}
+              className="nav nav-link"
+            >
+              <FontAwesomeIcon
+                icon={faOpencart}
+                color="white"
+                size="3x"
+                className="position-relative"
+              />
+              <Badge
+                pill
+                bg="light"
+                text="dark"
+                style={{ position: "absolute", top: "0", right: "0" }}
               >
-                <FontAwesomeIcon
-                  icon={faCartShopping}
-                  color="white"
-                  size="3x"
-                  className="ms-5 position-relative"
-                />
-                <Badge
-                  pill
-                  bg="light"
-                  text="dark"
-                  style={{ position: "absolute", top: "0", right: "5em" }}
-                >
-                  {state.carts.length}
-                </Badge>
-              </Link>
-            </div>
-          </Col>
+                {state.carts.length || 0}
+              </Badge>
+            </Link>
+          </div>
         </Container>
       </Navbar>
-      <NavHeader showHeader = {showHeader}/>
+      <NavHeader showHeader={showHeader} />
 
       {showHeader && (
         <div

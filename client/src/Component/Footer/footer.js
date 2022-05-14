@@ -1,3 +1,5 @@
+import React from "react";
+import { Link } from "react-router-dom";
 import {
   Container,
   Col,
@@ -6,12 +8,10 @@ import {
   Form,
   Button,
 } from "react-bootstrap";
-import React from "react";
-import "./styleFooter.css"; 
-import { Link } from "react-router-dom";
+
 function Footer() {
   const colorMain = "#0c2132";
-  const colorSecond = "#336699";
+  const colorSecond = "#29689b";
   return (
     <>
       <Container
@@ -53,8 +53,8 @@ function Footer() {
             />
           </Col>
           <Col md={2}>
+            <p className="fw-bold h6 text-white">DANH MỤC</p>
             <ul className="text-white list-unstyled help">
-              <li className="fw-bold">DANH MỤC</li>
               <li>MUA SẮM NGAY</li>
               <li>QUÀ TẶNG</li>
               <li>PHẢN HỒI</li>
@@ -62,8 +62,8 @@ function Footer() {
             </ul>
           </Col>
           <Col md={3}>
+            <p className="text-white h6">TRỢ GIÚP</p>
             <ul className="text-white list-unstyled help">
-              <li className="fw-bold">TRỢ GIÚP</li>
               <li>VẬN CHUYỂN</li>
               <li>VỀ CHÚNG TÔI</li>
               <li>CHÍNH SÁCH ĐỔI TRẢ</li>
@@ -76,15 +76,13 @@ function Footer() {
             </ul>
           </Col>
           <Col md={4} className="text-white ">
-            <h4>CONNECT WITH US</h4>
+            <h6>CONNECT WITH US</h6>
             <table>
               <tbody>
                 <tr>
                   <td className="pe-3">FACEBOOK: </td>
                   <td className="text-secondary">
-                    <Link to="/"
-                      className="text-decoration-none"
-                    >
+                    <Link to="/" className="text-decoration-none">
                       https://www.facebook.com/T.Fish
                     </Link>
                   </td>

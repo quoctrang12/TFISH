@@ -9,21 +9,25 @@ import {
   SET_USER_LOGIN,
   SET_STATUS_LOGIN,
   SET_CARTS,
-  UPDATE_CART,
-  SET_SEARCH
+  UPDATE,
+  SET_SEARCH,
+  SET_ALL_USERS,
+  SET_ALL_BILLS
 } from "./constants";
 const initState = {
   allProduct: [],
+  allBill: [],
+  allUser: [],
   onePageProduct: [],
   numberPageProduct: 1,
-  typeProduct: "",
+  typeProduct: {},
   allTypeProduct: [],
   email: "",
   password: "",
   userLogin: {},
-  statusLogin: "",
+  statusLogin: false,
   carts: [],
-  updateCart: 1,
+  update: 1,
   search:""
 };
 
@@ -33,6 +37,16 @@ function reducer(state, action) {
       return {
         ...state,
         allProduct: action.payload,
+      };
+      case SET_ALL_USERS:
+      return {
+        ...state,
+        allUser: action.payload,
+      };
+      case SET_ALL_BILLS:
+      return {
+        ...state,
+        allBill: action.payload,
       };
     case SET_ONE_PAGE_PRODUCT:
       if (action.payload) {
@@ -92,10 +106,10 @@ function reducer(state, action) {
             ...state,
             search: action.payload,
           };
-    case UPDATE_CART:
+    case UPDATE:
           return {
             ...state,
-            updateCart: prev => prev+1
+            update: prev => prev+1
           };
     default:
       throw new Error("Unknown action type: " + action.type);
