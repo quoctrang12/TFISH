@@ -47,7 +47,7 @@ function Product() {
     dispatch(actions.update());
   };
   useEffect(() => {
-    axios.get("/api/typeproduct").then((result) => {
+    axios.get("http://localhost:4000/api/typeproduct").then((result) => {
       dispatch(actions.setALLTypeProduct(result.data.TypeProduct));
     });
   }, [dispatch]);
@@ -77,7 +77,7 @@ function Product() {
               <Button
                 onClick={() => {
                   axios
-                    .post("/api/sortProduct", {
+                    .post("http://localhost:4000/api/sortProduct", {
                       sortBy: sortBy,
                       sort: sort,
                     })

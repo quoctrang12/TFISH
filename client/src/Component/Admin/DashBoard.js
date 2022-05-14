@@ -20,7 +20,7 @@ function DashBoard() {
   const colorSecond = "#29689b";
 
   useEffect(() => {
-    axios.get("/api/getAllBill").then((res) => {
+    axios.get("http://localhost:4000/api/getAllBill").then((res) => {
       dispatch(actions.setAllBills(res.data));
       setProfit(0);
       res.data.forEach((item) => {
@@ -29,7 +29,7 @@ function DashBoard() {
     });
 
     axios
-      .get("/api/getAllUser")
+      .get("http://localhost:4000/api/getAllUser")
       .then((res) => dispatch(actions.setAllUsers(res.data)));
   }, [state.update, dispatch]);
   return (

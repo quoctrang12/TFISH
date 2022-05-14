@@ -10,7 +10,7 @@ function Search() {
   const [product, setProduct] = useState([]);
   useEffect(() => {
     axios
-      .post("/api/search", {
+      .post("http://localhost:4000/api/search", {
         content: state.search,
       })
       .then((res) => {

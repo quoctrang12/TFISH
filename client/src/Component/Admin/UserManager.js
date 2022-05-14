@@ -9,7 +9,7 @@ function User() {
   const [state, dispatch] = useStore();
   useEffect(() => {
     axios
-      .get("/api/getAllUser")
+      .get("http://localhost:4000/api/getAllUser")
       .then((res) => dispatch(actions.setAllUsers(res.data)));
   }, [state.update, dispatch]);
   return (

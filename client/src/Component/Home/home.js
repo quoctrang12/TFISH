@@ -21,14 +21,14 @@ function Home() {
   const [deco, setDeco] = useState([]);
   useEffect(() => {
     axios
-      .get("/api/productshome")
+      .get("http://localhost:4000/api/productshome")
       .then((res) => {
         setProd(res.data.products);
       })
       .catch((error) => console.log(error));
 
     axios
-      .get("/api/trangtrihome")
+      .get("http://localhost:4000/api/trangtrihome")
       .then((res) => {
         setDeco(res.data.trangtri);
       })

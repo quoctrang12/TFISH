@@ -10,7 +10,7 @@ function MenuProduct() {
   const [state, dispatch] = useStore();
   useEffect(() => {
     axios
-      .get("/api/typeproduct")
+      .get("http://localhost:4000/api/typeproduct")
       .then((result) => {
         dispatch(actions.setALLTypeProduct(result.data.TypeProduct));
       })

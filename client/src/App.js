@@ -12,7 +12,7 @@ function App() {
   const [state, dispatch] = useStore();
   useEffect(() => {
     axios
-      .get("/api/product")
+      .get("http://localhost:4000/api/product")
       .then((result) => {
         dispatch(actions.setAllProducts(result.data.product));
         for (

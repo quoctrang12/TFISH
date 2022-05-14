@@ -23,7 +23,7 @@ function DashBoard() {
 
   useEffect(() => {
     axios
-      .get("/api/getAllBill")
+      .get("http://localhost:4000/api/getAllBill")
       .then((res) => dispatch(actions.setAllBills(res.data)));
   }, [state.update, dispatch]);
   return (
@@ -52,7 +52,7 @@ function DashBoard() {
               <Button
                 onClick={() => {
                   axios
-                    .post("/api/sortBill", {
+                    .post("http://localhost:4000/api/sortBill", {
                       sortBy: sortBy,
                       sort: sort,
                     })

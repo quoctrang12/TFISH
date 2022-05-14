@@ -66,7 +66,7 @@ function Bill() {
                         ? click.classList.add("show")
                         : click.classList.remove("show");
                       axios
-                        .post("/api/getDetailBill", { mahd: bill.id })
+                        .post("http://localhost:4000/api/getDetailBill", { mahd: bill.id })
                         .then((res) => {
                           setBillDetail(res.data);
                           console.log(res.data);

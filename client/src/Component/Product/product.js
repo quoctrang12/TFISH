@@ -92,7 +92,7 @@ function ProductPage() {
                     className="rounded-0"
                     onChange={(e) => {
                       axios
-                        .post("/api/sortProduct", {
+                        .post("http://localhost:4000/api/sortProduct", {
                           sortBy: e.target.value,
                           sort: "ASC",
                         })
