@@ -35,7 +35,7 @@ function Footer() {
               />
               <Button
                 style={{ backgroundColor: colorMain, minWidth: "150px" }}
-                className="rounded-0"
+                className="rounded-0 border-0"
                 type="submit"
               >
                 Đăng ký
@@ -45,12 +45,9 @@ function Footer() {
         </Row>
         <Row className="pt-5 lh-lg fs">
           <Col md={3}>
-            <img
-              alt=""
-              src="https://cdn.shopify.com/s/files/1/0147/1561/7366/files/coburg-logo-white-with-fish.png?v=1559017648"
-              width="80%"
-              className="d-inline-block align-top"
-            />
+          <Link to="/" className="nav logo ms-5 mt-5">
+            <span className="logo mt-5">T.FISH</span>
+          </Link>
           </Col>
           <Col md={2}>
             <p className="fw-bold h6 text-white">DANH MỤC</p>

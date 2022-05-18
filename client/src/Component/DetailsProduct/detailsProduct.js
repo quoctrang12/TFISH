@@ -178,6 +178,7 @@ function DetailsProduct() {
       <div style={{ backgroundColor: "#6bc5d110" }} className="p-5 m-0">
         <Container>
           <Row>
+          <h2 className="pb-3 text-uppercase">Sản phẩm tương tự</h2>
             <Slider {...settings}>
               {state.allProduct.map(
                 (product) =>

@@ -10,12 +10,7 @@ import Brand from "./Brand";
 import "./styleHome.css";
 
 function Home() {
-  // comment attributes
-  const [cmtName, setCmtName] = useState("Nguyễn Quốc Trạng");
-  const [cmtImg, setCmtImg] = useState("./images/betta-2.jpg");
-  const [cmtTitle, setCmtTitle] = useState(
-    "Cá đẹp lắmCá đẹp lắmCá đẹp lắmCá đẹp lắmCá đẹp lắmCá đẹp lắmCá đẹp lắm, nhưng dễ chết lắm đừng có mua"
-  );
+  
   //product attributes
   const [prod, setProd] = useState([]);
   const [deco, setDeco] = useState([]);
@@ -129,11 +124,15 @@ function Home() {
         <Container>
           <h2 className="text-center mb-4">WHAT OUR CUSTOMERS ARE SAYING</h2>
           <Row className="mb-5">
-            {[1, 2, 3].map((item) => (
               <Col lg="4">
-                <Comment name={cmtName} img={cmtImg} cmt={cmtTitle} />
+                <Comment name={"Lê Lụa"} img={"./images/betta-2.jpg"} cmt={"Cá đẹp lắm"} />
               </Col>
-            ))}
+              <Col lg="4">
+                <Comment name={"Trạng Nguyễn"} img={"./images/betta-3.jpg"} cmt={"5* cho cửa hàng"} />
+              </Col>
+              <Col lg="4">
+                <Comment name={"Nguyễn Quốc Trạng"} img={"./images/betta-4.jpg"} cmt={"Cá đẹp, giao hàng nhanh"} />
+              </Col>
             <Link to="/" className="text-decoration-none text-center mt-3 add">
               Xem tất cả
               <p className="add-type"></p>

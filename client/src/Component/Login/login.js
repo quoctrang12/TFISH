@@ -21,6 +21,7 @@ import { useStore, actions } from "../../Store";
 function Login() {
   const [state, dispatch] = useStore();
   const [validated, setValidated] = useState(false);
+  const [error, setError] = useState(false);
   let navigate = useNavigate();
 
   const handleSubmit = (event) => {
@@ -32,6 +33,7 @@ function Login() {
       .then((res) => {
         if (res.data.message) {
           dispatch(actions.setStatusLogin(false));
+          setError(true)
         } else {
           toast.success("Đăng nhập thành công", {
             position: "top-right",
@@ -143,7 +145,7 @@ function Login() {
             >
               Đăng nhập
             </Button>
-            {state.statusLogin && (
+            {error && (
               <Alert variant="danger">Sai tài khoản hoặc mật khẩu. Vui lòng đăng nhập lại</Alert>
             )}
           </Form>

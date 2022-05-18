@@ -8,7 +8,7 @@ function Comment({ name, img, cmt }) {
     <Card
       style={{
         width: "100%",
-        height: "250px",
+        maxHeight: "250px",
         backgroundColor: "rgb(238, 196, 196,0.1)",
       }}
     >
@@ -25,11 +25,11 @@ function Comment({ name, img, cmt }) {
           <FontAwesomeIcon icon={faCircleCheck} color="#007be0" size="xs" />
         </Card.Title>
         <Card.Subtitle className="mb-2">
-          <FontAwesomeIcon icon={faStar} color="yellow" />
-          <FontAwesomeIcon icon={faStar} color="yellow" />
-          <FontAwesomeIcon icon={faStar} color="yellow" />
-          <FontAwesomeIcon icon={faStar} color="yellow" />
-          <FontAwesomeIcon icon={faStar} color="yellow" />
+          <FontAwesomeIcon icon={faStar} color="#336699" />
+          <FontAwesomeIcon icon={faStar} color="#336699" />
+          <FontAwesomeIcon icon={faStar} color="#336699" />
+          <FontAwesomeIcon icon={faStar} color="#336699" />
+          <FontAwesomeIcon icon={faStar} color="#336699" />
         </Card.Subtitle>
         <Card.Text>{cmt}</Card.Text>
       </Card.Body>
