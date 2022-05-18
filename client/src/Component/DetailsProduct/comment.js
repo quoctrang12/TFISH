@@ -3,7 +3,7 @@ import { Container, Form, Button } from "react-bootstrap";
 function Comment() {
   return (
     <div>
-      <Container>
+      <Container className="w-50 mx-auto">
         <h2 className="text-uppercase text-center">Bình luận và đánh giá</h2>
 
         <Form>

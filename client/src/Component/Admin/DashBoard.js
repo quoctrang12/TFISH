@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Col, Container, Row, Table, Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faProductHunt } from "@fortawesome/free-brands-svg-icons";
@@ -9,12 +10,15 @@ import {
   faUsers,
   faFileInvoiceDollar,
   faHandHoldingDollar,
+  faCircleInfo
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useStore, actions } from "../../Store";
 
 function DashBoard() {
+  let navigate = useNavigate();
   const [state, dispatch] = useStore();
+  const formatMoney=new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'VND' });
   const [profit, setProfit] = useState(0);
   const colorMain = "#0c2132";
   const colorSecond = "#29689b";
@@ -99,7 +103,7 @@ function DashBoard() {
                 <Row>
                   <Col>
                     <Card.Title className="fs-3">Profit</Card.Title>
-                    <Card.Text>{profit} </Card.Text>
+                    <Card.Text>{formatMoney.format(profit)} </Card.Text>
                   </Col>
                   <Col className="m-auto">
                     <FontAwesomeIcon
@@ -134,16 +138,22 @@ function DashBoard() {
                     </td>
                     <td className="py-3">{item.name}</td>
                     <td className="py-3">{item.address}</td>
-                    <td className="py-3">{item.total} VNĐ</td>
+                    <td className="py-3">{formatMoney.format(item.total)} </td>
                     <td className="py-3">
                       <span className="rounded-pill p-1 text-secondary">
                         {item.status}
                       </span>
                     </td>
                     <td align="center" className="py-3">
+                    <FontAwesomeIcon
+                        icon={faCircleInfo}
+                        color="#336699"
+                        onClick={() => navigate(`/admin/billdetail/${item.id}`)}
+                      />
                       <FontAwesomeIcon
                         icon={faCheck}
                         color="green"
+                        className="ms-2"
                         onClick={() => {
                           let status = "";
                           if (item.status === "Đang xác nhận") {

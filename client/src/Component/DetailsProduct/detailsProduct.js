@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Slider from "react-slick";
+import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import {
   Col,
   Container,
@@ -22,11 +23,11 @@ import Comment from "./comment";
 
 function DetailsProduct() {
   let navigate = useNavigate();
+  let { productID } = useParams();
 
   const [state, dispatch] = useStore();
   const [productDetails, setProductDetails] = useState({});
   const [count, setCount] = useState(1);
-  let { productID } = useParams();
   useEffect(() => {
     state.allProduct.forEach((product) => {
       if (product.id === parseInt(productID)) setProductDetails(product);
@@ -40,12 +41,31 @@ function DetailsProduct() {
   };
   const handleAddProduct = () => {
     if (state.statusLogin) {
-      axios.post("http://localhost:4000/api/addCart", {
-        id_product: productDetails.id,
-        id_user: state.userLogin.id,
-        count: count,
-      });
-      dispatch(actions.update());
+      axios
+        .post("http://localhost:4000/api/addCart", {
+          id_product: productDetails.id,
+          id_user: state.userLogin.id,
+          count: count,
+        })
+        .then((res) => {
+          toast.success("Thêm vào giỏ hàng thành công", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          axios
+            .post("http://localhost:4000/api/getCart", {
+              id_user: state.userLogin.id,
+            })
+            .then((res) => {
+              dispatch(actions.setCarts(res.data.product));
+            });
+          dispatch(actions.update());
+        });
     } else {
       navigate("/login");
     }
@@ -87,7 +107,7 @@ function DetailsProduct() {
                   Trạng thái: <Badge className="rounded-0 ">Còn hàng</Badge>
                 </Col>
               </Row>
-              <h4 className="pb-3">{productDetails.price}</h4>
+              <h4 className="pb-3">{new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'VND' }).format(productDetails.price)}</h4>
 
               <Alert
                 style={{ backgroundColor: "#6bc5d120" }}
@@ -103,10 +123,13 @@ function DetailsProduct() {
                   }}
                 >
                   <Button
-                    variant="secondary"
+                    className="btn-add"
                     onClick={() => setCount(count - 1)}
                   >
-                    <i>-</i>
+                    <FontAwesomeIcon
+                        icon={faMinus}
+                        style={{ cursor: "pointer" }}
+                      />
                   </Button>
                   <FormControl
                     type="text"
@@ -115,10 +138,13 @@ function DetailsProduct() {
                     className="text-center rounded-0 border-0"
                   />
                   <Button
-                    variant="secondary"
+                    className="btn-add"
                     onClick={() => setCount(count + 1)}
                   >
-                    <i>+</i>
+                    <FontAwesomeIcon
+                        icon={faPlus}
+                        style={{ cursor: "pointer" }}
+                      />
                   </Button>
                 </ButtonGroup>
               </Alert>

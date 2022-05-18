@@ -7,15 +7,8 @@ function Menu() {
   const handleShow = () => setOpen(!open);
   return (
     <ListGroup variant="flush">
-      <Link to="/" className="nav">
-        <img
-          alt=""
-          src="https://cdn.shopify.com/s/files/1/0147/1561/7366/files/coburg-logo-white-with-fish.png?v=1559017648"
-          width="80"
-          height="80"
-          className="d-inline-block align-top"
-        />{" "}
-        <span>T.FISH</span>
+      <Link to="/" className="nav logo mx-auto">
+        <span className="logo">T.FISH</span>
       </Link>
       <hr style={{ color: "white " }} />
       <ListGroup.Item style={{ backgroundColor: "#0c2132" }}>

@@ -144,6 +144,7 @@ app.post("/api/addCart", (req, res) => {
       }
       if (results.length > 0) {
         count = count + results[0].count;
+        count>0?
         connection.query(
           "update carts set count=? where id_product=? and id_user=?;",
           [count, id_product, id_user],
@@ -151,8 +152,21 @@ app.post("/api/addCart", (req, res) => {
             if (err) {
               res.send({ err: err });
             }
+            res.send(results);
+
           }
-        );
+        ):
+        connection.query(
+          "DELETE FROM carts WHERE id_product=? AND id_user = ?;",
+          [id_product, id_user],
+          function (err, results) {
+            if (err) {
+              res.send({ err: err });
+            }
+            res.send(results);
+
+          }
+        )
       } else {
         connection.query(
           "insert into carts (id_product, id_user,count) value (?, ?, ?)",
@@ -161,6 +175,7 @@ app.post("/api/addCart", (req, res) => {
             if (err) {
               res.send({ err: err });
             }
+            res.send(results);
           }
         );
       }
@@ -269,7 +284,8 @@ app.post("/api/getBill", (req, res) => {
 app.post("/api/getDetailBill", (req, res) => {
   mahd = req.body.mahd;
   connection.query(
-    "Select * from bill_detail c  join products s on c.id_product=s.id where id_bill =?",
+    "Select * from bills b join users u on b.id_user = u.id join bill_detail c on b.id=c.id_bill\
+     join products s on c.id_product=s.id where id_bill =?",
     [mahd],
     function (err, results) {
       res.send(results);
@@ -320,6 +336,35 @@ app.post("/api/addProduct", (req, res) => {
     function (err, results) {
       if (err) throw err;
       console.log(results);
+    }
+  );
+});
+
+app.post("/api/updateProduct", (req, res) => {
+  id= req.body.id;
+  name_product = req.body.name;
+  des = req.body.des;
+  image = req.body.image;
+  price = req.body.price;
+  size = req.body.size;
+  id_type = req.body.id_type;
+  connection.query(
+    "update products set name_product=?, price=?, size=?, linkimg=?, des=?, id_type=? where id =?",
+    [name_product, price, size, image, des, id_type,id],
+    function (err, results) {
+      if (err) throw err;
+      console.log(results);
+    }
+  );
+});
+app.post("/api/deleteProduct", (req, res) => {
+  id= req.body.id;
+  
+  connection.query(
+    "delete from products where id =?",
+    [id],
+    function (err, results) {
+      if (err) throw err;
     }
   );
 });

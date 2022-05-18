@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Container,
@@ -17,10 +18,10 @@ import { useStore } from "../../Store";
 function Bill() {
   const [state] = useStore();
   const [key, setKey] = useState("Đang xác nhận");
+  let navigate = useNavigate();
+  const formatMoney=new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'VND' });
 
   const [bill, setBill] = useState([]);
-  const [billDetail, setBillDetail] = useState([]);
-  const [open, setOpen] = useState(false);
   useEffect(() => {
     console.log(key);
     axios
@@ -57,57 +58,14 @@ function Bill() {
                 </Row>
                 {bill.map((bill, index) => (
                   <Row
-                    id={bill.id}
                     className="p-3 border-bottom"
-                    onClick={() => {
-                      setOpen(!open);
-                      var click = document.getElementById(`detail${bill.id}`);
-                      open
-                        ? click.classList.add("show")
-                        : click.classList.remove("show");
-                      axios
-                        .post("http://localhost:4000/api/getDetailBill", { mahd: bill.id })
-                        .then((res) => {
-                          setBillDetail(res.data);
-                          console.log(res.data);
-                        })
-                        .catch((err) => console.log(err));
-                    }}
+                    onClick={() => navigate(`/billdetail/${bill.id}`)}
                   >
                     <Col lg={1}>{index + 1}</Col>
                     <Col lg={2}>{bill.create_at.split("T")[0]}</Col>
                     <Col lg={3}>{bill.address}</Col>
-                    <Col lg={2}>{bill.total} VNĐ</Col>
+                    <Col lg={2}>{formatMoney.format(bill.total)}</Col>
                     <Col lg={3}>{bill.payment}</Col>
-
-                    <Collapse in={false} id={`detail${bill.id}`}>
-                      <Container>
-                        <Table>
-                          <tbody>
-                            {billDetail.map((detail) => (
-                              <tr className="align-middle">
-                                <td></td>
-                                <td>
-                                  <img
-                                    src={detail.linkimg}
-                                    width="100px"
-                                    alt=""
-                                  />
-                                </td>
-                                <td>{detail.name_product}</td>
-                                <td>{detail.price} VNĐ</td>
-                                <td>{detail.count}</td>
-                                <td>
-                                  {detail.price * detail.count}
-                                  VNĐ
-                                </td>
-                                <td></td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </Table>
-                      </Container>
-                    </Collapse>
                   </Row>
                 ))}
               </ListGroup>

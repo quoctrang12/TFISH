@@ -38,6 +38,10 @@ function App() {
             <Route path="/contact" element={<Component.PageContact />}></Route>
             <Route path="/cart" element={<Component.PageCart />}></Route>
             <Route path="/bill" element={<Component.PageBill />}></Route>
+            <Route
+              path="/billdetail/:billID"
+              element={<Component.PageBillDetail />}
+            ></Route>
           </Route>
           <Route path="/login" element={<Component.PageLogin />}></Route>
           <Route path="/logon" element={<Component.PageLogon />}></Route>
@@ -47,12 +51,20 @@ function App() {
             element={<Component.PageDetailsProduct />}
           ></Route>
         </Route>
+        <Route element={<PrivateRoutes />}>
+
         <Route path="/admin" element={<Component.PageAdmin />}>
           <Route index element={<Component.PageAdminDashboard />} />
           <Route path="product" element={<Component.PageAdminProduct />} />
           <Route path="user" element={<Component.PageAdminUser />} />
           <Route path="bill" element={<Component.PageAdminBill />} />
+          <Route
+              path="billdetail/:billID"
+              element={<Component.PageBillDetail />}
+            />
         </Route>
+        </Route>
+
       </Routes>
       <ToastContainer pauseOnFocusLoss draggable pauseOnHover />
     </>

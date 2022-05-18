@@ -1,13 +1,16 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import {
   Button,
+  ButtonGroup,
   Col,
   Container,
   Form,
+  FormControl,
   Modal,
   Row,
   Table,
@@ -17,7 +20,7 @@ import { useStore, actions } from "../../Store";
 
 function Cart() {
   const [state, dispatch] = useStore();
-
+  const formatMoney=new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'VND' });
   const [sum, setSum] = useState();
   const [discount, setDiscount] = useState(0);
   const [shipping, setShipping] = useState(0);
@@ -25,13 +28,11 @@ function Cart() {
   const [address, setAddress] = useState("");
 
   const [show, setShow] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
 
   let navigate = useNavigate();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleSubmit = () => {
-    dispatch(actions.update());
     axios
       .post("http://localhost:4000/api/pay", {
         id_user: state.userLogin.id,
@@ -40,7 +41,16 @@ function Cart() {
       })
       .then((res) => {
         setShow(false);
-        setShowSuccess(true);
+        dispatch(actions.update());
+        toast.success("Đặt hàng thành công", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -94,24 +104,65 @@ function Cart() {
           </thead>
           <tbody>
             {state.carts.map((product) => (
-              <tr
-                className="align-middle"
-                onClick={() => {
-                  navigate(`/details/${product.id}`);
-                }}
-              >
+              <tr className="align-middle">
                 <td></td>
-                <td>
+                <td
+                  onClick={() => {
+                    navigate(`/details/${product.id}`);
+                  }}
+                >
                   <img src={product.linkimg} width="100px" alt="" />
                 </td>
                 <td>{product.name_product}</td>
                 <td>{product.size}</td>
-                <td>{product.price} VNĐ</td>
-                <td>{product.count}</td>
-                <td>{product.price * product.count} VNĐ</td>
+                <td>{formatMoney.format(product.price)}</td>
+                <td>
+                  <ButtonGroup>
+                    <Button
+                      variant="light"
+                      onClick={() => {
+                        axios.post("http://localhost:4000/api/addCart", {
+                          id_product: product.id,
+                          id_user: state.userLogin.id,
+                          count: -1,
+                        });
+                      dispatch(actions.update());
+                      }}
+                    >
+                      <FontAwesomeIcon
+                        icon={faMinus}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </Button>
+                    <FormControl
+                      type="text"
+                      id={product.id}
+                      value={product.count}
+                      style={{ width: "50px" }}
+                      className="text-center rounded-0 border-0"
+                    />
+                    <Button
+                      variant="light"
+                      onClick={() => {
+                        axios.post("http://localhost:4000/api/addCart", {
+                          id_product: product.id,
+                          id_user: state.userLogin.id,
+                          count: 1,
+                        });
+                      dispatch(actions.update());
+                      }}
+                    >
+                      <FontAwesomeIcon
+                        icon={faPlus}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </Button>
+                  </ButtonGroup>
+                </td>
+                <td>{formatMoney.format(product.price * product.count)}</td>
                 <td>
                   <Button
-                    className="rounded-0"
+                    className="rounded-0 btn-add"
                     onClick={() => {
                       axios.post("http://localhost:4000/api/delete", {
                         id_product: product.id,
@@ -135,10 +186,19 @@ function Cart() {
       <Row className="pt-2 pb-5">
         <Col lg={6}>
           <Button
-            className="text-uppercase rounded-0"
+            className="text-uppercase rounded-0 btn-add"
             onClick={() => {
               axios.post("http://localhost:4000/api/deleteAllCart", {
                 id_user: state.userLogin.id,
+              });
+              toast.warning("Xóa tất cả sản phẩm", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
               });
               dispatch(actions.update());
             }}
@@ -148,7 +208,7 @@ function Cart() {
         </Col>
         <Col lg={6} className="text-end">
           <Button
-            className="text-uppercase rounded-0"
+            className="text-uppercase rounded-0 btn-add"
             onClick={() => {
               navigate("/product");
             }}
@@ -168,7 +228,7 @@ function Cart() {
           </Row>
           <Row className="p-2">
             <Col className="fw-bold">Tổng tiền: </Col>
-            <Col className="text-end">{sum} VNĐ</Col>
+            <Col className="text-end">{formatMoney.format(sum)}</Col>
           </Row>
           <Row className="p-2">
             <Form>
@@ -194,7 +254,10 @@ function Cart() {
                 </Form.Text>
               </Form.Group>
             </Form>
-            <Button className="text-uppercase rounded-0" onClick={handleShow}>
+            <Button
+              className="text-uppercase rounded-0 btn-add"
+              onClick={handleShow}
+            >
               Đặt hàng
             </Button>
           </Row>
@@ -222,25 +285,26 @@ function Cart() {
             <h6>Thông tin đơn hàng: </h6>
             <Row className="p-2">
               <Col className="fw-bold">Tổng tiền: </Col>
-              <Col className="text-end">{sum} VNĐ</Col>
+              <Col className="text-end">{formatMoney.format(sum)} </Col>
             </Row>
             <Row className="p-2">
               <Col className="fw-bold">Phí vận chuyển: </Col>
-              <Col className="text-end">{shipping} VNĐ</Col>
+              <Col className="text-end">{formatMoney.format(shipping)} </Col>
             </Row>
             <Row className="p-2">
               <Col className="fw-bold">Mã giảm giá: </Col>
-              <Col className="text-end">{discount} VNĐ</Col>
+              <Col className="text-end">{formatMoney.format(discount)} </Col>
             </Row>
             <hr />
             <Row className="p-2">
               <Col className="fw-bold">Thành tiền: </Col>
-              <Col className="text-end">{total} VNĐ</Col>
+              <Col className="text-end">{formatMoney.format(total)} </Col>
             </Row>
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button
+            className="rounded-0"
             variant="secondary"
             onClick={() => {
               setShow(false);
@@ -249,24 +313,8 @@ function Cart() {
           >
             Đóng
           </Button>
-          <Button variant="primary" onClick={handleSubmit}>
+          <Button className="btn-add" onClick={handleSubmit}>
             Xác nhận
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      <Modal show={showSuccess} onHide={handleClose}>
-        <Modal.Header closeButton></Modal.Header>
-        <Modal.Body>ĐẶT HÀNG THÀNH CÔNG</Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="success"
-            onClick={() => {
-              setShow(false);
-              setShowSuccess(false);
-              dispatch(actions.update());
-            }}
-          >
-            OK
           </Button>
         </Modal.Footer>
       </Modal>

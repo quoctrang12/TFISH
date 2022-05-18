@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faClose, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faClose, faFilter, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import {
   Col,
   Container,
@@ -16,7 +17,9 @@ import {
 import { useStore, actions } from "../../Store";
 
 function DashBoard() {
+  let navigate = useNavigate();
   const [state, dispatch] = useStore();
+  const formatMoney=new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'VND' });
   const [sortBy, setSortBy] = useState("");
   const [sort, setSort] = useState("");
   const [fill, setFill] = useState("");
@@ -50,6 +53,7 @@ function DashBoard() {
                 <option value="DESC">Giảm dần</option>
               </Form.Select>
               <Button
+               className="btn-add"
                 onClick={() => {
                   axios
                     .post("http://localhost:4000/api/sortBill", {
@@ -65,29 +69,18 @@ function DashBoard() {
               </Button>
             </InputGroup>
           </Col>
-          <Col md={3} className="text-end ms-auto">
-            <Dropdown>
-              <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                <FontAwesomeIcon icon={faFilter} />
-              </Dropdown.Toggle>
-              <Dropdown.Menu style={{ marginLeft: "70px", marginTop: "10px" }}>
-                <Dropdown.Item onClick={(e) => setFill("")}>
-                  Tất cả
-                </Dropdown.Item>
-                <Dropdown.Item onClick={(e) => setFill("Đang xác nhận")}>
-                  Đang xác nhận
-                </Dropdown.Item>
-                <Dropdown.Item onClick={(e) => setFill("Đang giao hàng")}>
-                  Đang giao hàng
-                </Dropdown.Item>
-                <Dropdown.Item onClick={(e) => setFill("Đã giao")}>
-                  Đã giao
-                </Dropdown.Item>
-                <Dropdown.Item onClick={(e) => setFill("Đã hủy")}>
-                  Đã hủy
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+          <Col md={2} className="text-end ms-auto">
+          <Form.Select
+                className="rounded-0 border-0"
+                onChange={(e) => setFill(e.target.value)}
+              >
+                <option value="">Tất cả</option>
+                <option value="Đang xác nhận">Đang xác nhận</option>
+                <option value="Đang giao hàng">Đang giao hàng</option>
+                <option value="Đã giao">Đã giao</option>
+                <option value="Đã hủy">Đã hủy</option>             
+
+              </Form.Select>
           </Col>
         </Row>
         <Table>
@@ -105,13 +98,13 @@ function DashBoard() {
             {state.allBill.map((item) =>
               fill ? (
                 item.status === fill && (
-                  <tr>
+                  <tr >
                     <td className="py-3">
                       {item.create_at.split("T").join(" ").split(".000Z")}
                     </td>
                     <td className="py-3">{item.name}</td>
                     <td className="py-3">{item.address}</td>
-                    <td className="py-3">{item.total} VNĐ</td>
+                    <td className="py-3">{formatMoney.format(item.total)}</td>
                     <td className="py-3">
                       {item.status === "Đang xác nhận" && (
                         <span className="rounded-pill p-1 text-secondary">
@@ -135,9 +128,15 @@ function DashBoard() {
                       )}
                     </td>
                     <td align="center" className="py-3">
+                    <FontAwesomeIcon
+                        icon={faCircleInfo}
+                        color="#336699"
+                        onClick={() => navigate(`admin/billdetail/${item.id}`)}
+                      />
                       <FontAwesomeIcon
                         icon={faCheck}
                         color="green"
+                        className="ms-2"
                         onClick={() => {
                           let status = "";
                           if (item.status === "Đang xác nhận") {
@@ -181,7 +180,7 @@ function DashBoard() {
                   </td>
                   <td className="py-3">{item.name}</td>
                   <td className="py-3">{item.address}</td>
-                  <td className="py-3">{item.total} VNĐ</td>
+                  <td className="py-3">{formatMoney.format(item.total)}</td>
                   <td className="py-3">
                     {item.status === "Đang xác nhận" && (
                       <span className="rounded-pill p-1 text-secondary">
@@ -205,9 +204,15 @@ function DashBoard() {
                     )}
                   </td>
                   <td align="center" className="py-3">
+                  <FontAwesomeIcon
+                        icon={faCircleInfo}
+                        color="#336699"
+                        onClick={() => navigate(`/billdetail/${item.id}`)}
+                      />
                     <FontAwesomeIcon
                       icon={faCheck}
                       color="green"
+                      className="ms-2"
                       onClick={() => {
                         let status = "";
                         if (item.status === "Đang xác nhận") {

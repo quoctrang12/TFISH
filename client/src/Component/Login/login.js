@@ -144,7 +144,7 @@ function Login() {
               Đăng nhập
             </Button>
             {state.statusLogin && (
-              <Alert variant="danger">{state.statusLogin}</Alert>
+              <Alert variant="danger">Sai tài khoản hoặc mật khẩu. Vui lòng đăng nhập lại</Alert>
             )}
           </Form>
           <h4 className="mb-4 text-center">Hoặc</h4>

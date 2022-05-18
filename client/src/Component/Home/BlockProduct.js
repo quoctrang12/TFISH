@@ -18,24 +18,26 @@ function Product({ id_product, name, img, title, price, size }) {
         id_product: id_product,
         id_user: state.userLogin.id,
         count: 1,
-      });
-      toast.success("Thêm vào giỏ hàng thành công", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      axios
-        .post("http://localhost:4000/api/getCart", {
-          id_user: state.userLogin.id,
-        })
-        .then((res) => {
-          dispatch(actions.setCarts(res.data.product));
+      }).then((res)=>{
+        toast.success("Thêm vào giỏ hàng thành công", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
         });
-      dispatch(actions.update());
+        axios
+          .post("http://localhost:4000/api/getCart", {
+            id_user: state.userLogin.id,
+          })
+          .then((res) => {
+            dispatch(actions.setCarts(res.data.product));
+          });
+        dispatch(actions.update());
+      })
+      
     } else {
       navigate("/login");
     }
@@ -68,7 +70,7 @@ function Product({ id_product, name, img, title, price, size }) {
           <FontAwesomeIcon icon={faStar} color="#29689b " />
           <FontAwesomeIcon icon={faStar} color="#29689b " />
           <FontAwesomeIcon icon={faStar} color="#29689b " />
-          <p className="price mt-2 mb-1">{price}</p>
+          <p className="price mt-2 mb-1">{new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'VND' }).format(price)}</p>
         </Card.Subtitle>
 
         <Button className="btn btn-add" onClick={handleAddProduct}>
