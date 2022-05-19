@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ListGroup, Collapse } from "react-bootstrap";
+import { useStore, actions } from "../../Store";
 
 function Menu() {
+  const [state, dispatch] = useStore();
   const [open, setOpen] = useState(false);
   const handleShow = () => setOpen(!open);
   return (
@@ -23,7 +25,7 @@ function Menu() {
       </ListGroup.Item>
       <ListGroup.Item style={{ backgroundColor: "#0c2132" }}>
         <Link to="/admin/bill" className="text-decoration-none text-white">
-          Bill
+          Bill 
         </Link>
       </ListGroup.Item>
       <ListGroup.Item style={{ backgroundColor: "#0c2132" }}>
@@ -50,7 +52,12 @@ function Menu() {
               </Link>
             </ListGroup.Item>
             <ListGroup.Item style={{ backgroundColor: "#0c2132" }}>
-              <Link to="/login" className="text-decoration-none text-white">
+              <Link to="/login" className="text-decoration-none text-white"
+              onClick={() => {
+                dispatch(actions.setStatusLogin(false));
+                dispatch(actions.setUserLogin({}));
+                dispatch(actions.setCarts([]));
+              }}>
                 Sign out
               </Link>
             </ListGroup.Item>

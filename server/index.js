@@ -14,7 +14,7 @@ app.use(express.static(path.resolve(__dirname, "../client/build")));
 const connection = mysql.createConnection({
   host: process.env.REACT_APP_HOST,
   user: process.env.REACT_APP_USER,
-  // password: process.env.REACT_APP_PASSWORD,
+  password: process.env.REACT_APP_PASSWORD,
   database: process.env.REACT_APP_DATABASE,
 });
 
